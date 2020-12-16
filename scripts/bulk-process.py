@@ -133,6 +133,7 @@ def get_capa_results(args):
         if fw:
             json.dump(json_result, fw)
             logging.info('jsons results %s' % path_file)
+            fw.close()
     except:
         logging.error('Bad recording %s' % path_file)
         pass
