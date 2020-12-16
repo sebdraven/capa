@@ -131,7 +131,8 @@ def get_capa_results(args):
         path_file = os.path.join(path_dir,name_file)
         fw = open(path_file,'w')
         if fw:
-            json.dump(json_result,fw)
+            json.dump(json_result, fw)
+            logging.info('jsons results %s' % path_file)
     except:
         logging.error('Bad recording %s' % path_file)
         pass
