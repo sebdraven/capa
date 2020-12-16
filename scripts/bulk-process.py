@@ -236,7 +236,10 @@ def main(argv=None):
                 json_result = capa.render.render_json(meta, rules, capabilities)
                 name_file = os.path.basename(result['path'])
                 path_dir = 'jsons/%s/%s/%s/%s' % (name_file[0:2], name_file[2:4], name_file[4:6], name_file[6:8])
-                os.makedirs(path_dir, exist_ok=True)
+                try:
+                    os.makedirs(path_dir)
+                except:
+                    pass
                 path_file = os.path.join(path_dir, name_file)
                 try:
                     fw = open(path_file, 'w')
