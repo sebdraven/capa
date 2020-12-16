@@ -123,7 +123,18 @@ def get_capa_results(args):
     meta = capa.main.collect_metadata("", path, "", format, extractor)
     capabilities, counts = capa.main.find_capabilities(rules, extractor, disable_progress=True)
     meta["analysis"].update(counts)
-
+    json_result = capa.render.render_json(meta, rules, capabilities)
+    name_file = os.path.basename(path)
+    path_dir = 'jsons/%s/%s/%s/%s' % (name_file[0:2],name_file[2:4],name_file[4:6], name_file[6:8])
+    try:
+        os.makedirs(path_dir, exist_ok=True)
+        path_file = os.path.join(path_dir,name_file)
+        fw = open(path_file,'w')
+        if fw:
+            json.dump(json_result,fw)
+    except:
+        logging.error('Bad recording %s' % path_file)
+        pass
     return {
         "path": path,
         "status": "ok",
@@ -232,11 +243,11 @@ def main(argv=None):
                 capabilities = result["ok"]["capabilities"]
                 # our renderer expects to emit a json document for a single sample
                 # so we deserialize the json document, store it in a larger dict, and we'll subsequently re-encode.
-                results[result["path"]] = json.loads(capa.render.render_json(meta, rules, capabilities))
+                #results[result["path"]] = json.loads(capa.render.render_json(meta, rules, capabilities))
             else:
                 raise ValueError("unexpected status: %s" % (result["status"]))
 
-        print(json.dumps(results))
+        #print(json.dumps(results))
 
         logger.info("done.")
 
